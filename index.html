@@ -524,9 +524,9 @@ function buildTrainingScreens(scenarios, containerId, prefix) {
   scenarios.forEach((s, i) => {
     const div = document.createElement('div');
     div.className = 'screen';
-    div.id = `bar-${i}`;
+    div.id = `${prefix}-${i}`;
     const tc = TC[s.tc] || TC.orange;
-    const total = SC_BAR.length;
+    const total = scenarios.length;
     const chIntro = s.chN ? `
       <div class="ch-intro">
         <div class="ch-num">${String(s.chN).padStart(2,'0')}</div>
