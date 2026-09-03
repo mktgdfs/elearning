@@ -664,7 +664,7 @@ const SC_BAR = [
      {t:"Stuur hem door naar de HBHV-er want die is de officiële contactpersoon voor de hulpdiensten en hoort dit gesprek zelf te voeren.",c:false}
    ],
    fbOk:"Goed. Meerdere meldingen van hetzelfde incident is normaal en geen probleem voor de meldkamer. Laat hem doorgaan, zorg voor correcte informatie en begeleid daarna naar verzamelplaats.",
-   fbErr:"Een burger mag altijd 112 bellen. Meerdere meldingen zijn geen probleem. Laat hem zijn gesprek afmaken met de juiste informatie en begeleid daarna naar de verzamelplaats."},,
+   fbErr:"Een burger mag altijd 112 bellen. Meerdere meldingen zijn geen probleem. Laat hem zijn gesprek afmaken met de juiste informatie en begeleid daarna naar de verzamelplaats."},
 
   {id:'bar12',ch:"Letsel bij bezoekers",tag:"🩺 Letsel",tc:"green",
    ctx:"De HBHV-er is er nog niet. Jij bent de eerste ter plekke.",
@@ -698,6 +698,7 @@ const CH_COL = {
 };
 
 const SCENARIO_MAP = {bar: SC_BAR};
+SCENARIO_MAP['bar'] = SC_BAR;
 let userName = '';
 let userEmail = '';
 
@@ -1168,7 +1169,7 @@ const SC_ALL = [
      {t:"Wacht vijf minuten want de bezoeker is waarschijnlijk zelf ook aan het ontruimen en loopt een alternatieve route naar de verzamelplaats.",c:false}
    ],
    fbOk:"Correct. Niemand gaat terug naar het gebouw — ook geen collega's. Meld bij de HBHV-er en laat die coördineren met de hulpdiensten. Terugkeren is levensgevaarlijk.",
-   fbErr:"Niemand gaat terug naar een gebouw tijdens een ontruiming. Meld bij de HBHV-er zodat die de beslissing neemt en eventueel de brandweer inschakelt."},,
+   fbErr:"Niemand gaat terug naar een gebouw tijdens een ontruiming. Meld bij de HBHV-er zodat die de beslissing neemt en eventueel de brandweer inschakelt."},
 
   {id:'a12',ch:"Ontruiming",tag:"🚪 Ontruiming",tc:"siren",title:"HBHV-er verlaat als laatste",sit:"De ontruiming is in gang. Bezoekers zijn buiten. Als HBHV-er ben je nog binnen.",q:"Wat doe je als laatste voordat je zelf naar buiten gaat?",opts:[
      {t:"Alle ruimtes controleren op mensen, gas en stroom afsluiten, als laatste het gebouw verlaten.",c:true},
@@ -1338,7 +1339,7 @@ const SC_BHV = [
      {t:"Laat bezoekers zelf kiezen waar ze gaan staan en zorg alleen dat ze bij elkaar blijven op één van beide locaties.",c:false},
    ],
    fbOk:"Correct. Vraag wie de operationele leiding heeft — dat is de aangewezen functionaris in de incidentmanagementstructuur. Volg dan die lijn en communiceer dit duidelijk naar je medewerkers.",
-   fbErr:"Bij tegenstrijdige instructies van hulpdiensten: vraag wie de leiding heeft en volg die lijn. Je kunt niet zelf arbitreren tussen twee diensten."},,
+   fbErr:"Bij tegenstrijdige instructies van hulpdiensten: vraag wie de leiding heeft en volg die lijn. Je kunt niet zelf arbitreren tussen twee diensten."},
 
   {id:'b14',ch:"Communicatie & nazorg",tag:"📡 Communicatie",tc:"siren",ctx:"Iedereen is buiten, situatie niet veilig verklaard.",ctxClass:"role-ctx role-ctx-orange",title:"Bezoekers willen weglopen van verzamelplaats",sit:"Een groep bezoekers begint weg te lopen van de Ramstoren. 'We gaan naar huis, het duurt te lang.'",q:"Hoe handel je als HBHV-er?",opts:[
      {t:"Laat ze gaan want je kunt bezoekers niet dwingen te blijven en hun eigen veiligheidsgevoel moet worden gerespecteerd.",c:false},
@@ -1588,7 +1589,7 @@ const SC_TECH = [
      {t:"Laat een barmedewerker bij het luik staan terwijl jij het sluit — zo ben je efficiënt en is het veiligheidsrisico direct opgelost.",c:false}
    ],
    fbOk:"Correct. Jij gaat voor het luik staan als menselijke barrière en waarschuwt bezoekers. Dat is veiliger dan het luik sluiten terwijl mensen lopen. Meld daarna aan de HBHV-er.",
-   fbErr:"Het luik sluiten terwijl bezoekers in de buurt lopen is riskant. Jij fungeert als barrière, waarschuwt bezoekers en meldt aan de HBHV-er. Veiligheid gaat voor snelheid."},,
+   fbErr:"Het luik sluiten terwijl bezoekers in de buurt lopen is riskant. Jij fungeert als barrière, waarschuwt bezoekers en meldt aan de HBHV-er. Veiligheid gaat voor snelheid."},
 
   {id:'t11',ch:"Ontruiming begeleiden",tag:"🚪 Ontruiming",tc:"siren",
    ctx:"Bezoekers zijn buiten. Jij staat bij de verzamelplaats.",ctxClass:"role-ctx role-ctx-teal",
