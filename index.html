@@ -141,6 +141,18 @@ h1 em{color:var(--orange);font-style:normal;}
 .sec-div{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
 .sec-div::after{content:'';flex:1;height:1px;background:var(--border);}
 
+/* NAME/EMAIL GATE */
+.gate-wrap{max-width:440px;margin:0 auto;width:100%;}
+.gate-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:8px;}
+.gate-sub{color:var(--muted);font-size:.88rem;margin-bottom:32px;}
+.field-group{margin-bottom:20px;}
+.field-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px;display:block;}
+.field-input{width:100%;background:var(--s1);border:1.5px solid var(--border);color:var(--text);border-radius:8px;padding:12px 16px;font-family:'Poppins',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s;}
+.field-input:focus{border-color:var(--orange);}
+.field-input.error{border-color:var(--red);}
+.field-error{color:var(--red);font-size:.75rem;margin-top:4px;display:none;}
+.field-error.show{display:block;}
+
 /* HOME REF STRIP */
 .home-ref-strip{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
 .home-ref-item{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;flex:1;min-width:130px;}
@@ -183,8 +195,28 @@ h1 em{color:var(--orange);font-style:normal;}
   </div>
 </header>
 
+<!-- NAME/EMAIL GATE -->
+<div class="screen active" id="s-gate">
+  <div class="gate-wrap">
+    <div class="home-eyebrow">🎭 Calamiteiten E-Learning</div>
+    <div class="gate-title">Welkom!</div>
+    <p class="gate-sub">Vul je naam en e-mailadres in om de training te starten. Je gegevens worden gebruikt voor de registratie van je deelname.</p>
+    <div class="field-group">
+      <label class="field-label" for="inp-name">Naam</label>
+      <input class="field-input" id="inp-name" type="text" placeholder="Voornaam achternaam" autocomplete="name">
+      <div class="field-error" id="err-name">Vul je naam in.</div>
+    </div>
+    <div class="field-group">
+      <label class="field-label" for="inp-email">E-mailadres</label>
+      <input class="field-input" id="inp-email" type="email" placeholder="naam@voorbeeld.nl" autocomplete="email">
+      <div class="field-error" id="err-email">Vul een geldig e-mailadres in.</div>
+    </div>
+    <button class="btn btn-primary" onclick="submitGate()" style="width:100%;justify-content:center;margin-top:8px;">Start training →</button>
+  </div>
+</div>
+
 <!-- HOME -->
-<div class="screen active" id="s-home">
+<div class="screen" id="s-home">
   <div class="home-eyebrow">🎭 Calamiteiten E-Learning</div>
   <h1>Kies jouw <em>training</em></h1>
   <p class="home-lead">Selecteer hieronder de training die past bij jouw rol in Theater De Fransche School.</p>
@@ -646,6 +678,45 @@ const CH_COL = {
 };
 
 const SCENARIO_MAP = {bar: SC_BAR};
+let userName = '';
+let userEmail = '';
+
+function submitGate() {
+  const name = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  let valid = true;
+  if (!name) {
+    document.getElementById('err-name').classList.add('show');
+    document.getElementById('inp-name').classList.add('error');
+    valid = false;
+  } else {
+    document.getElementById('err-name').classList.remove('show');
+    document.getElementById('inp-name').classList.remove('error');
+  }
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRe.test(email)) {
+    document.getElementById('err-email').classList.add('show');
+    document.getElementById('inp-email').classList.add('error');
+    valid = false;
+  } else {
+    document.getElementById('err-email').classList.remove('show');
+    document.getElementById('inp-email').classList.remove('error');
+  }
+  if (!valid) return;
+  userName = name;
+  userEmail = email;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s-home').classList.add('active');
+  document.getElementById('step-lbl').textContent = 'Kies je training';
+}
+
+// Allow Enter key on gate fields
+document.addEventListener('DOMContentLoaded', () => {
+  ['inp-name','inp-email'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') submitGate(); });
+  });
+});
 let activeTraining = null;
 let state = {idx:0, answers:{}, selected:{}};
 
@@ -710,7 +781,9 @@ function pick(sid, optIdx, isCorrect, prefix, idx) {
   });
   const fb = document.getElementById(`fb-${sid}`);
   fb.className = `fb show ${isCorrect ? 'fb-ok' : 'fb-err'}`;
-  const calamLink = !isCorrect ? `<div class="info-box" style="margin-top:10px;"><b>📄 Wil je de instructies nalezen?</b> <a href="https://mktgdfs.github.io/elearning/calamiteitenplan.pdf" target="_blank" style="color:var(--orange);text-decoration:underline;">Open het calamiteitenplan →</a></div>` : '';
+  const pageMap = {"a1": 14, "a2": 8, "a3": 17, "a4": 21, "a5": 12, "a6": 11, "a7": 11, "a8": 10, "a9": 9, "a10": 13, "a11": 20, "a12": 14, "a13": 8, "a14": 21, "a15": 11, "a16": 9, "a17": 8, "a18": 9, "a19": 13, "b1": 14, "b2": 8, "b3": 8, "b4": 14, "b5": 14, "b6": 14, "b7": 15, "b8": 11, "b9": 21, "b10": 12, "b11": 10, "b12": 9, "b13": 14, "b14": 13, "b15": 8, "b16": 14, "b17": 15, "b18": 12, "b19": 10, "b20": 8, "b21": 13, "bar1": 16, "bar2": 17, "bar3": 17, "bar4": 17, "bar5": 17, "bar6": 17, "bar7": 17, "bar8": 16, "bar9": 16, "bar10": 16, "bar11": 11, "bar12": 11, "bar13": 17, "bar14": 16, "bar15": 16, "bar16": 11, "bar17": 16, "bar18": 17, "bar19": 8, "t1": 18, "t2": 19, "t3": 19, "t4": 19, "t5": 19, "t6": 19, "t7": 19, "t8": 18, "t9": 10, "t10": 18, "t11": 18, "t12": 10, "t13": 19, "t14": 8, "t15": 18, "t16": 18, "t17": 19, "t18": 18};
+  const pdfPage = pageMap[sid] || 1;
+  const calamLink = !isCorrect ? `<div class="info-box" style="margin-top:10px;"><b>📄 Wil je de instructies nalezen?</b> <a href="https://mktgdfs.github.io/elearning/calamiteitenplan.pdf#page=${pdfPage}" target="_blank" style="color:var(--orange);text-decoration:underline;">Open het calamiteitenplan (pagina ${pdfPage}) →</a></div>` : '';
   fb.innerHTML = `<strong>${isCorrect ? '✅ Goed antwoord!' : '❌ Niet juist.'}</strong>${isCorrect ? s.fbOk : s.fbErr}${s.extra ? `<div class="info-box">${s.extra}</div>` : ''}${calamLink}`;
   document.getElementById(`nb-${sid}`).style.display = 'inline-flex';
   const corr = Object.values(state.answers).filter(Boolean).length;
@@ -769,6 +842,7 @@ function goHome() {
   document.getElementById('home-hdr').style.display = 'none';
   document.getElementById('pb').style.width = '0%';
   const pb2 = document.getElementById('progress-bar'); if(pb2) pb2.classList.remove('show');
+  activeTraining = null;
   try{document.querySelector(".screen.active").scrollIntoView({block:"start",behavior:"instant"});}catch(e){}
 }
 
@@ -798,6 +872,38 @@ function showScreen(id, lbl) {
   try{document.querySelector(".screen.active").scrollIntoView({block:"start",behavior:"instant"});}catch(e){}
 }
 
+
+function logToSheet(prefix, corr, tot, pass_) {
+  const now = new Date();
+  const datum = now.getFullYear().toString() +
+    String(now.getMonth()+1).padStart(2,'0') +
+    String(now.getDate()).padStart(2,'0');
+  const tijd = String(now.getHours()).padStart(2,'0') + '.' +
+    String(now.getMinutes()).padStart(2,'0');
+  const rolLabels = {all:'Alle vrijwilligers', bhv:'BHV-er / GH-GV', bar:'Barmedewerker', tech:'Medewerker Techniek'};
+  const scenarios = SCENARIO_MAP[prefix];
+  const vragenDetail = scenarios.map(function(s) {
+    const res = state.answers[s.id];
+    return s.id + ':' + (res === true ? 'G' : res === false ? 'F' : '-');
+  }).join(' | ');
+  const payload = {
+    naam: userName,
+    email: userEmail,
+    datum: datum,
+    tijd: tijd,
+    rol: rolLabels[prefix] || prefix,
+    score: corr + '/' + tot + ' (' + Math.round(corr/tot*100) + '%)',
+    geslaagd: pass_ ? 'Ja' : 'Nee',
+    vragen: vragenDetail
+  };
+  fetch('https://script.google.com/macros/s/AKfycbzLYAG4XliCW8l0UKaKjje7lZVCFm19iKmC-pr233F-WSdcCngFa9c-qdcOO4XhJq3GVQ/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).catch(function(e) { console.warn('Log failed:', e); });
+}
+
 function showResult(prefix) {
   const scenarios = SCENARIO_MAP[prefix] || SC_BAR;
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -808,6 +914,7 @@ function showResult(prefix) {
   const tot = scenarios.length;
   const pct = Math.round(corr/tot*100);
   const pass = pct >= 75;
+  logToSheet(prefix, corr, tot, pass);
   const ring = document.getElementById('res-ring');
   ring.className = `result-ring ${pass ? 'ring-pass' : 'ring-fail'}`;
   ring.textContent = pct + '%';
